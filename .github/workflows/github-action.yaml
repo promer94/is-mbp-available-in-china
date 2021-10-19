@@ -1,0 +1,23 @@
+name: Can i buy macbook pro now?
+on:
+  schedule:
+    # 15 min
+    - cron: '*/15 * * * *'
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.0.2
+          run_install: true
+      - run: pnpm build
+      - run: node dist/index.js
+        env:
+          TGTOKEN: ${{ secrets.TGTOKEN }}
+          TGID: ${{ secrets.TGID }}
